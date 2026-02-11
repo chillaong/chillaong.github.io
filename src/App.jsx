@@ -437,7 +437,7 @@ const ImpactSection = () => (
             <h3 className="text-xl font-bold">The Foundation</h3>
           </div>
           <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100 relative overflow-hidden group hover:border-blue-200 transition-colors">
-            <h4 className="font-bold text-lg mb-1">HUST (985/211)</h4>
+            <h4 className="font-bold text-lg mb-1">HuaZhong University of Science and Technology (985)</h4>
             <div className="text-sm text-slate-500 mb-4">Energy & Power Engineering</div>
             <div className="flex flex-wrap gap-2">
               <span className="px-2 py-1 bg-white border border-slate-200 rounded text-[10px] font-bold text-slate-600">CS Minor</span>
