@@ -112,7 +112,22 @@ const GrowthPath = () => (
 
 const HandPhone = ({ images }) => {
   const [active, setActive] = useState(0);
+  const [direction, setDirection] = useState(1); // 1: left->right, -1: right->left
+
+  useEffect(() => {
+    if (!images || images.length === 0) return undefined;
+    const timer = setInterval(() => {
+      setDirection(1);
+      setActive((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [images]);
   
+  const handleDotClick = (idx) => {
+    setDirection(idx > active ? 1 : -1);
+    setActive(idx);
+  };
+
   return (
     <div className="relative w-64 h-[480px] mx-auto group">
       <div 
@@ -121,25 +136,30 @@ const HandPhone = ({ images }) => {
       >
         <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-4 bg-slate-100 rounded-full z-20 border border-slate-200" />
         <div className="w-full h-full relative bg-slate-50">
-          {images.map((img, idx) => (
-            <div
-              key={idx}
-              className={`absolute inset-0 ${active === idx ? 'block' : 'hidden'}`}
-            >
-              <img
-                src={img}
-                alt={`Game screen ${idx + 1}`}
-                className="w-full h-full object-cover"
-                style={{ filter: 'sepia(0.2)' }}
-              />
-            </div>
-          ))}
+          <AnimatePresence initial={false} mode="sync" custom={direction}>
+            {images.map((img, idx) => (
+              idx === active && (
+                <motion.img
+                  key={img}
+                  src={img}
+                  alt={`Game screen ${idx + 1}`}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  style={{ filter: 'sepia(0.2)' }}
+                  custom={direction}
+                  initial={{ x: direction > 0 ? 120 : -120, opacity: 1 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: direction > 0 ? -120 : 120, opacity: 1 }}
+                  transition={{ type: 'spring', stiffness: 120, damping: 18, mass: 0.9 }}
+                />
+              )
+            ))}
+          </AnimatePresence>
         </div>
         <div className="absolute bottom-6 left-0 w-full flex justify-center gap-2 z-30">
           {images.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => setActive(idx)}
+              onClick={() => handleDotClick(idx)}
               className={`w-2 h-2 rounded-full border border-slate-800 transition-all ${active === idx ? 'bg-slate-800 scale-125' : 'bg-white'}`}
             >
               <span className="sr-only">Screen {idx + 1}</span>
