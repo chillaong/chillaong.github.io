@@ -92,10 +92,14 @@ const GrowthPath = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
       initial={{ pathLength: 0 }}
-      whileInView={{ pathLength: 1 }}
+      animate={{ pathLength: 1 }}
       transition={{ duration: 2, ease: "easeInOut" }}
     />
-    <motion.g initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 1.5 }}>
+    <motion.g 
+      initial={{ opacity: 0 }} 
+      animate={{ opacity: 1 }} 
+      transition={{ delay: 1.5 }}
+    >
       <circle cx="10" cy="105" r="3" fill={SOLO_THEME.ink} />
       <text x="15" y="105" fontSize="8" fill={SOLO_THEME.ink} fontFamily="inherit">Day 1 (20)</text>
       <circle cx="100" cy="50" r="3" fill={SOLO_THEME.accent} />
@@ -108,6 +112,7 @@ const GrowthPath = () => (
 
 const HandPhone = ({ images }) => {
   const [active, setActive] = useState(0);
+  
   return (
     <div className="relative w-64 h-[480px] mx-auto group">
       <div 
@@ -117,16 +122,17 @@ const HandPhone = ({ images }) => {
         <div className="absolute top-4 left-1/2 -translate-x-1/2 w-20 h-4 bg-slate-100 rounded-full z-20 border border-slate-200" />
         <div className="w-full h-full relative bg-slate-50">
           {images.map((img, idx) => (
-            <motion.img
+            <div
               key={idx}
-              src={img}
-              alt={`Screen ${idx}`}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: active === idx ? 1 : 0, x: active === idx ? 0 : 20, scale: active === idx ? 1 : 0.95 }}
-              transition={{ duration: 0.4 }}
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ filter: 'sepia(0.2)' }}
-            />
+              className={`absolute inset-0 ${active === idx ? 'block' : 'hidden'}`}
+            >
+              <img
+                src={img}
+                alt={`Game screen ${idx + 1}`}
+                className="w-full h-full object-cover"
+                style={{ filter: 'sepia(0.2)' }}
+              />
+            </div>
           ))}
         </div>
         <div className="absolute bottom-6 left-0 w-full flex justify-center gap-2 z-30">
@@ -135,7 +141,9 @@ const HandPhone = ({ images }) => {
               key={idx}
               onClick={() => setActive(idx)}
               className={`w-2 h-2 rounded-full border border-slate-800 transition-all ${active === idx ? 'bg-slate-800 scale-125' : 'bg-white'}`}
-            />
+            >
+              <span className="sr-only">Screen {idx + 1}</span>
+            </button>
           ))}
         </div>
       </div>
