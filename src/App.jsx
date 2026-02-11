@@ -241,7 +241,7 @@ const SoloLab = () => {
 // 4. 主页面组件 (Main Page)
 // ==========================================
 
-const Navbar = () => (
+const Navbar = ({ onResumeClick }) => (
   <nav className="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/60 px-6 py-4 transition-all">
     <div className="max-w-7xl mx-auto flex justify-between items-center">
       <div className="flex items-center gap-8">
@@ -260,9 +260,9 @@ const Navbar = () => (
         <a href="https://www.linkedin.com/in/chilla-ong-0475b8217/?locale=zh" target="_blank" rel="noreferrer" className="p-2 text-slate-400 hover:text-[#0077B5] transition hover:bg-slate-50 rounded-full">
           <Linkedin size={20}/>
         </a>
-        <a href="/resume/UserPM_Gamefication_growth.pdf" target="_blank" rel="noopener noreferrer" className="bg-[#1E1E3C] text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-[#2D2D55] transition shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 group">
+        <button onClick={onResumeClick} className="bg-[#1E1E3C] text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-[#2D2D55] transition shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 group">
           <Download size={12} className="group-hover:animate-bounce" /> Resume
-        </a>
+        </button>
       </div>
     </div>
   </nav>
@@ -521,9 +521,33 @@ const Testimonials = () => (
 
 const App = () => {
   const [showEmailModal, setShowEmailModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const handlePasswordSubmit = () => {
+    if (password === '0821ava') {
+      // Correct password - open resume in new tab for preview
+      window.open('/resume/UserPM_Gamefication_growth.pdf', '_blank', 'noopener,noreferrer');
+
+      // Close modal and reset
+      setShowPasswordModal(false);
+      setPassword('');
+      setPasswordError('');
+    } else {
+      // Wrong password
+      setPasswordError('Incorrect password. Please try again.');
+      setPassword('');
+    }
+  };
+
+    const handleEmailClick = () => {
+      window.location.href = 'mailto:avawang821@gmail.com';
+      setShowEmailModal(true);
+    };
   return (
     <div className="bg-[#F8FAFC] min-h-screen font-sans selection:bg-indigo-100 text-[#1E1E3C] overflow-x-hidden">
-      <Navbar />
+      <Navbar onResumeClick={() => setShowPasswordModal(true)} />
       <main>
         <Hero />
         
@@ -699,6 +723,94 @@ const App = () => {
               >
                 Got it! Let's Connect
               </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Password Modal */}
+      <AnimatePresence>
+        {showPasswordModal && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-6"
+            onClick={() => setShowPasswordModal(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.8, rotate: -2 }}
+              animate={{ scale: 1, rotate: 0 }}
+              exit={{ scale: 0.8, rotate: 2 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="bg-white p-8 rounded-3xl max-w-md w-full relative cursor-default"
+              style={{ 
+                boxShadow: '8px 8px 0px rgba(79, 70, 229, 0.3)',
+                border: '2px solid #1E1E3C'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Washi Tape */}
+              <div className="absolute top-0 left-1/4 w-20 h-6 bg-yellow-200/50 -translate-y-1/2 transform rotate-12"></div>
+              <div className="absolute top-0 right-1/4 w-20 h-6 bg-indigo-200/50 -translate-y-1/2 transform -rotate-12"></div>
+              
+              {/* Hand-drawn Header */}
+              <h3 className="font-hand text-2xl font-bold mb-6 text-center text-[#1E1E3C]">
+                Resume Access
+              </h3>
+              
+              {/* Hand-drawn Divider */}
+              <div className="w-full h-2 mb-6 relative overflow-hidden">
+                <svg viewBox="0 0 400 10" className="w-full h-full">
+                  <path 
+                    d="M0,5 Q50,2 100,5 Q150,8 200,5 Q250,2 300,5 Q350,8 400,5" 
+                    fill="none" 
+                    stroke="#4F46E5" 
+                    strokeWidth="3" 
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+              
+              {/* Password Input */}
+              <div className="space-y-4 mb-8">
+                <p className="text-slate-600 leading-relaxed font-medium text-center">
+                  Please enter the password to access my resume.
+                </p>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password..."
+                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-indigo-500 focus:outline-none transition-colors text-center font-mono"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handlePasswordSubmit();
+                    }
+                  }}
+                />
+                {passwordError && (
+                  <p className="text-red-500 text-sm text-center font-medium">
+                    {passwordError}
+                  </p>
+                )}
+              </div>
+              
+              {/* Buttons */}
+              <div className="flex gap-3">
+                <button 
+                  onClick={() => setShowPasswordModal(false)}
+                  className="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-bold hover:bg-slate-200 transition"
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={handlePasswordSubmit}
+                  className="flex-1 bg-[#1E1E3C] text-white py-3 rounded-xl font-bold hover:bg-[#2D2D55] transition shadow-lg hover:shadow-indigo-500/20 flex items-center justify-center gap-2 group"
+                >
+                  <Download size={14} className="group-hover:animate-bounce" /> Access
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}
