@@ -686,9 +686,9 @@ const App = () => {
                   creative ideas, or opportunities to be part of your visions.
                 </p>
                 <div className="bg-indigo-50 p-4 rounded-xl border-2 border-dashed border-indigo-200">
-                  <p className="font-hand text-xl font-bold text-indigo-800">
+                  <a href="mailto:avawang821@gmail.com" className="font-hand text-xl font-bold text-indigo-800 hover:text-indigo-600 transition-colors">
                     avawang821@gmail.com
-                  </p>
+                  </a>
                 </div>
               </div>
               
