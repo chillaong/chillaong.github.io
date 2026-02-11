@@ -260,7 +260,7 @@ const Navbar = () => (
         <a href="https://www.linkedin.com/in/chilla-ong-0475b8217/?locale=zh" target="_blank" rel="noreferrer" className="p-2 text-slate-400 hover:text-[#0077B5] transition hover:bg-slate-50 rounded-full">
           <Linkedin size={20}/>
         </a>
-        <a href="/resume/UserPM_Gamefication&growth.pdf" target="_blank" rel="noopener noreferrer" className="bg-[#1E1E3C] text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-[#2D2D55] transition shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 group">
+        <a href="/resume/UserPM_Gamefication_growth.pdf" target="_blank" rel="noopener noreferrer" className="bg-[#1E1E3C] text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-[#2D2D55] transition shadow-xl hover:shadow-2xl hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 group">
           <Download size={12} className="group-hover:animate-bounce" /> Resume
         </a>
       </div>
